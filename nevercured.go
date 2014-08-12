@@ -3,20 +3,28 @@ package main
 import (
 	"flag"
 	"fmt"
+	"html/template"
 	"net/http"
+	"os"
+	"path"
 )
 
 var (
 	port int
+	tmpl *template.Template
 )
 
 func init() {
 	flag.IntVar(&port, "p", 8080, "Port to listen on")
 	flag.Parse()
+
+	pwd, _ := os.Getwd()
+	filename := path.Join(pwd, "templates", "index.tmpl")
+	tmpl, _ = template.ParseFiles(filename)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello, world!")
+	tmpl.Execute(w, struct{}{})
 }
 
 func main() {
