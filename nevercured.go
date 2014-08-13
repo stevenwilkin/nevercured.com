@@ -44,7 +44,8 @@ func init() {
 }
 
 func getEntry() Entry {
-	sql := "SELECT * FROM jft WHERE id = 366"
+	sql := "SELECT * FROM jft WHERE month = ? AND day = ?"
+	now := time.Now()
 
 	var id int
 	var month int
@@ -55,8 +56,8 @@ func getEntry() Entry {
 	var content string
 	var summary string
 
-	err := db.QueryRow(sql).Scan(&id, &month, &day, &title, &excerpt, &source,
-		&content, &summary)
+	err := db.QueryRow(sql, int(now.Month()), now.Day()).Scan(
+		&id, &month, &day, &title, &excerpt, &source, &content, &summary)
 	if err != nil {
 		fmt.Println(err)
 	}
