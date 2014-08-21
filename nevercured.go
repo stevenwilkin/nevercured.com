@@ -17,7 +17,7 @@ type Entry struct {
 	Day     int
 	Title   string
 	Excerpt template.HTML
-	Source  string
+	Source  template.HTML
 	Content template.HTML
 	Summary string
 }
@@ -63,7 +63,7 @@ func getEntry() Entry {
 	}
 
 	return Entry{time.Month(month).String(), day, title, template.HTML(excerpt),
-		source, template.HTML(content), summary}
+		template.HTML(source), template.HTML(content), summary}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
