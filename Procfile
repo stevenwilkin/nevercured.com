@@ -1,1 +1,1 @@
-web: nevercured -p $PORT
+web: nevercured.com -p $PORT
