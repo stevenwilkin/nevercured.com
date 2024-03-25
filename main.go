@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strings"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -16,11 +17,11 @@ import (
 type Entry struct {
 	Month   string
 	Day     int
-	Title   template.HTML
-	Excerpt template.HTML
-	Source  template.HTML
+	Title   string
+	Excerpt string
+	Source  string
 	Content template.HTML
-	Summary template.HTML
+	Summary string
 }
 
 var (
@@ -63,14 +64,19 @@ func getEntry() Entry {
 		fmt.Println(err)
 	}
 
+	var contentHtml strings.Builder
+	for _, paragraph := range strings.Split(content, "\n\n") {
+		contentHtml.WriteString("<p>" + paragraph + "</p>")
+	}
+
 	return Entry{
 		Month:   time.Month(month).String(),
 		Day:     day,
-		Title:   template.HTML(title),
-		Excerpt: template.HTML(excerpt),
-		Source:  template.HTML(source),
-		Content: template.HTML(content),
-		Summary: template.HTML(summary)}
+		Title:   title,
+		Excerpt: excerpt,
+		Source:  source,
+		Content: template.HTML(contentHtml.String()),
+		Summary: summary}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
