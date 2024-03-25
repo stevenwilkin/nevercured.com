@@ -4,12 +4,13 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	_ "github.com/mattn/go-sqlite3"
 	"html/template"
 	"net/http"
 	"os"
 	"path"
 	"time"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type Entry struct {
@@ -62,9 +63,14 @@ func getEntry() Entry {
 		fmt.Println(err)
 	}
 
-	return Entry{time.Month(month).String(), day, template.HTML(title),
-		template.HTML(excerpt), template.HTML(source), template.HTML(content),
-		template.HTML(summary)}
+	return Entry{
+		Month:   time.Month(month).String(),
+		Day:     day,
+		Title:   template.HTML(title),
+		Excerpt: template.HTML(excerpt),
+		Source:  template.HTML(source),
+		Content: template.HTML(content),
+		Summary: template.HTML(summary)}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
